@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>osh hair | 伊那の美容室</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #1a1a1a;
+      --white: #fafaf8;
+      --accent: #b8a98e;
+      --light: #f0ede8;
+      --muted: #888;
+      --line-green: #06c755;
+      --max: 720px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      line-height: 1.8;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(26,26,26,0.75);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: lowercase;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      color: rgba(255,255,255,0.55);
+      transition: color .2s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    /* ── Hero ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('外観.jpg') center center / cover no-repeat;
+      transform: scale(1.04);
+      transition: transform 8s ease-out;
+    }
+
+    #hero:hover .hero-bg { transform: scale(1); }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(10,10,10,0.55) 0%,
+        rgba(10,10,10,0.35) 50%,
+        rgba(10,10,10,0.65) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-tag {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    #hero h1 {
+      font-size: clamp(3.5rem, 11vw, 7rem);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: lowercase;
+      line-height: 1;
+      margin-bottom: 20px;
+      color: var(--white);
+    }
+
+    #hero .hero-sub {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 0.08em;
+      margin-bottom: 48px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 40px;
+      background: transparent;
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 0.82rem;
+      letter-spacing: 0.18em;
+      transition: background .25s, border-color .25s;
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: var(--white);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.45);
+    }
+
+    .scroll-hint::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: var(--accent);
+      animation: drop 1.8s ease-in-out infinite;
+    }
+
+    @keyframes drop {
+      0%   { opacity: 0; transform: scaleY(0); transform-origin: top; }
+      50%  { opacity: 1; }
+      100% { opacity: 0; transform: scaleY(1); transform-origin: top; }
+    }
+
+    /* ── Sections ── */
+    section { padding: 100px 24px; }
+
+    .inner {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 48px;
+      line-height: 1.3;
+    }
+
+    /* ── Gallery ── */
+    #gallery {
+      padding: 0;
+      background: var(--black);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 360px;
+    }
+
+    .gallery-item {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+      filter: brightness(0.92);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.05);
+      filter: brightness(1);
+    }
+
+    @media (max-width: 640px) {
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 200px 200px;
+      }
+
+      .gallery-item:first-child {
+        grid-column: 1 / -1;
+      }
+    }
+
+    /* ── Menu ── */
+    #menu { background: var(--light); }
+
+    .menu-list {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 22px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      gap: 16px;
+    }
+
+    .menu-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .menu-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .menu-price {
+      font-size: 1rem;
+      font-weight: 700;
+      white-space: nowrap;
+      color: var(--black);
+    }
+
+    .menu-note {
+      margin-top: 24px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    /* ── Access ── */
+    #access { background: var(--white); }
+
+    .access-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .access-info dt {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 24px;
+      margin-bottom: 6px;
+    }
+
+    .access-info dt:first-child { margin-top: 0; }
+
+    .access-info dd {
+      font-size: 0.9rem;
+      line-height: 1.9;
+    }
+
+    .map-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: var(--light);
+      border: 1px solid rgba(0,0,0,0.08);
+      text-decoration: none;
+      color: var(--black);
+      transition: background .2s;
+    }
+
+    .map-link:hover { background: #e5e0d8; }
+
+    .map-icon { font-size: 2rem; }
+
+    .map-link-text {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    /* ── Contact ── */
+    #booking {
+      background: var(--black);
+      color: var(--white);
+      padding: 0;
+    }
+
+    .booking-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 560px;
+    }
+
+    .booking-image {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .booking-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.75);
+    }
+
+    .booking-body {
+      padding: 80px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    #booking .section-label { color: var(--accent); }
+    #booking h2 {
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .contact-lead {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 40px;
+      line-height: 2;
+    }
+
+    .contact-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 24px;
+      border: 1px solid rgba(255,255,255,0.12);
+      text-decoration: none;
+      color: var(--white);
+      transition: border-color .2s, background .2s;
+    }
+
+    .contact-card:hover {
+      border-color: rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .contact-card.line-card { border-color: rgba(6,199,85,0.5); }
+    .contact-card.line-card:hover { background: rgba(6,199,85,0.08); border-color: var(--line-green); }
+
+    .contact-icon { font-size: 1.8rem; flex-shrink: 0; }
+
+    .contact-text { display: flex; flex-direction: column; gap: 2px; }
+
+    .contact-card-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .line-card .contact-card-label { color: var(--line-green); }
+
+    .contact-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .contact-note {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .contact-recommend {
+      display: inline-block;
+      margin-left: 6px;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      color: var(--line-green);
+      border: 1px solid var(--line-green);
+      padding: 1px 6px;
+      vertical-align: middle;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--black);
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      padding: 28px 24px;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .nav-links { gap: 18px; }
+      .nav-links a { font-size: 0.72rem; }
+
+      .access-grid { grid-template-columns: 1fr; }
+
+      .booking-inner { grid-template-columns: 1fr; }
+      .booking-image { height: 260px; }
+      .booking-body { padding: 60px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <a href="#hero" class="logo">osh hair</a>
+  <ul class="nav-links">
+    <li><a href="#menu">menu</a></li>
+    <li><a href="#access">access</a></li>
+    <li><a href="#booking">予約</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-tag">Hair Salon in Ina, Nagano</p>
+    <h1>osh hair</h1>
+    <p class="hero-sub">伊那にある、一人ひとりに寄り添う美容室</p>
+    <a href="#booking" class="btn">ご予約はこちら</a>
+  </div>
+  <div class="scroll-hint">scroll</div>
+</section>
+
+<!-- Gallery -->
+<section id="gallery">
+  <div class="gallery-grid">
+    <div class="gallery-item">
+      <img src="チェア.jpg" alt="施術チェア">
+    </div>
+    <div class="gallery-item">
+      <img src="シャンプー台.jpg" alt="シャンプー台">
+    </div>
+    <div class="gallery-item">
+      <img src="棚.jpg" alt="店内の棚">
+    </div>
+  </div>
+</section>
+
+<!-- Menu -->
+<section id="menu">
+  <div class="inner">
+    <p class="section-label">menu</p>
+    <h2>メニュー</h2>
+    <div class="menu-list">
+
+      <div class="menu-item">
+        <div>
+          <p class="menu-name">カット</p>
+          <p class="menu-desc">シャンプー・ブロー込み</p>
+        </div>
+        <p class="menu-price">¥4,200</p>
+      </div>
+
+      <div class="menu-item">
+        <div>
+          <p class="menu-name">カラー（リタッチ）</p>
+          <p class="menu-desc">根元のみ</p>
+        </div>
+        <p class="menu-price">¥3,500〜</p>
+      </div>
+
+      <div class="menu-item">
+        <div>
+          <p class="menu-name">カラー（全体）</p>
+          <p class="menu-desc">ロング料金 +¥1,000</p>
+        </div>
+        <p class="menu-price">¥4,000〜</p>
+      </div>
+
+      <div class="menu-item">
+        <div>
+          <p class="menu-name">パーマ</p>
+          <p class="menu-desc">シャンプー・ブロー別途</p>
+        </div>
+        <p class="menu-price">¥4,500</p>
+      </div>
+
+      <div class="menu-item">
+        <div>
+          <p class="menu-name">トリートメント</p>
+          <p class="menu-desc">シャンプー・ブロー別途</p>
+        </div>
+        <p class="menu-price">¥2,200</p>
+      </div>
+
+      <div class="menu-item">
+        <div>
+          <p class="menu-name">シャンプー・ブロー</p>
+          <p class="menu-desc">単品</p>
+        </div>
+        <p class="menu-price">¥1,000</p>
+      </div>
+
+    </div>
+    <p class="menu-note">
+      ※ 価格はすべて税込表示です。<br>
+      ※ カラー・パーマ・トリートメントにシャンプー・ブローをご希望の場合は +¥1,000 となります。
+    </p>
+  </div>
+</section>
+
+<!-- Access -->
+<section id="access">
+  <div class="inner">
+    <p class="section-label">access</p>
+    <h2>アクセス</h2>
+    <div class="access-grid">
+      <dl class="access-info">
+        <dt>住所</dt>
+        <dd>〒396-0621<br>長野県伊那市富県貝沼5640-2</dd>
+
+        <dt>電話</dt>
+        <dd>080-3397-5513</dd>
+
+        <dt>営業時間</dt>
+        <dd>10:00 〜 17:00</dd>
+
+        <dt>定休日</dt>
+        <dd>不定休</dd>
+
+        <dt>駐車場</dt>
+        <dd>あり</dd>
+      </dl>
+
+      <a class="map-link" href="https://maps.app.goo.gl/ssAwU8Hj5ajFSwZbA" target="_blank" rel="noopener">
+        <span class="map-icon">📍</span>
+        <span class="map-link-text">Google マップで見る</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Contact / Booking -->
+<section id="booking">
+  <div class="booking-inner">
+
+    <div class="booking-image">
+      <img src="名刺.jpg" alt="osh hair 名刺">
+    </div>
+
+    <div class="booking-body">
+      <p class="section-label">reservation</p>
+      <h2>ご予約・<br>お問い合わせ</h2>
+      <p class="contact-lead">
+        お電話またはLINEにて<br>お気軽にご連絡ください。
+      </p>
+
+      <div class="contact-cards">
+
+        <a class="contact-card" href="tel:080-3397-5513">
+          <span class="contact-icon">📞</span>
+          <div class="contact-text">
+            <span class="contact-card-label">phone</span>
+            <span class="contact-value">080-3397-5513</span>
+            <span class="contact-note">10:00 〜 17:00</span>
+          </div>
+        </a>
+
+        <a class="contact-card line-card" href="https://line.me/ti/p/9cCDHVABKv#~" target="_blank" rel="noopener">
+          <span class="contact-icon">💬</span>
+          <div class="contact-text">
+            <span class="contact-card-label">LINE</span>
+            <span class="contact-value">
+              LINE で予約
+              <span class="contact-recommend">おすすめ</span>
+            </span>
+            <span class="contact-note">友だち追加してメッセージを送信</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2026 osh hair. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
